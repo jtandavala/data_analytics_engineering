@@ -1,2 +1,2 @@
 # data_analytics_engineering
-Data Analytics
+Learning dbt project
