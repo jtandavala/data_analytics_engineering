@@ -1,0 +1,223 @@
+version: 2
+
+semantic_models:
+  - name: orders_semantic
+    description: "Semantic model for order transaction"
+    model: ref('fact_orders')
+
+    defaults:
+      agg_time_dimension: order_date
+    
+    entities:
+      - name: order_item
+        type: primary
+        expr: order_item_key
+      - name: order
+        type: foreign
+        expr: order_id
+      - name: customer
+        type: foreign
+        expr: customer_id
+      - name: product
+        type: foreign
+        expr: product_id
+
+    dimensions:
+      - name: order_date
+        type: time
+        type_params:
+          time_granularity: day
+        expr: order_date
+
+      - name: order_status
+        type: categorical
+        expr: order_status
+
+      - name: product_category
+        type: categorical
+        expr: product_category
+      
+      - name: customer_state
+        type: categorical
+        expr: customer_state
+      
+      - name: seller_state
+        type: categorical
+        expr: seller_state
+      
+      - name: payment_types
+        type: categorical
+        expr: payment_types
+      
+      - name: is_delivered
+        type: categorical
+        expr: is_delivered
+      
+      - name: is_canceled
+        type: categorical
+        expr: is_canceled
+    
+    measures:
+      - name: item_total_value
+        agg: sum
+        expr: item_total_value
+        description: "Total value of order items (price + freight)"
+      
+      - name: item_price
+        agg: sum
+        expr: item_price
+        description: "Sum of item prices"
+      
+      - name: item_freight_value
+        agg: sum
+        expr: item_freight
+        description: "Sum of item freight values"
+
+      - name: order_total_value
+        agg: sum
+        expr: order_total_value
+        description: "Sum of order total values"
+      
+      - name: items_total
+        agg: sum
+        expr: order_items_total
+        description: "Sum of items total"
+      
+      - name: freight_total_value
+        agg: sum
+        expr: order_freight_total
+        description: "Sum of freight total values"
+      
+      - name: payment_total
+        agg: sum
+        expr: payment_total
+        description: "Sum of payment total"
+      
+      - name: item_quantity
+        agg: sum
+        expr: item_quantity
+        description: "Sum of item quantity"
+      
+      - name: order_count
+        agg: count
+        expr: order_id
+        description: "Count of orders"
+
+      - name: customer_count
+        agg: count_distinct
+        expr: customer_id
+        description: "Count of customers"
+      
+      - name: product_count
+        agg: count_distinct
+        expr: product_id
+        description: "Count of products"
+      
+      - name: seller_count
+        agg: count_distinct
+        expr: seller_id
+        description: "Count of sellers"
+      
+      - name: avg_item_value
+        agg: average
+        expr: item_total_value
+        description: "Average item value"
+      
+      - name: avg_order_value
+        agg: average
+        expr: order_total_value
+        description: "Average order value"
+      
+      - name: delivered_revenue
+        agg: sum
+        expr: |
+          case when is_delivered = 1 then item_total_value else 0 end
+        description: "Revenue from delivered orders"
+      
+      - name: canceled_revenue
+        agg: sum
+        expr: |
+          case when is_canceled = 1 then item_total_value else 0 end
+        description: "Revenue from canceled orders"
+  
+  - name: daily_financials_semantic
+    description: "Semantic model for daily financial metrics"
+    model: ref('fact_daily_financials')
+
+    defaults:
+      agg_time_dimension: order_date
+
+    entities:
+      - name: daily_financials
+        type: primary
+        expr: order_date || '_' || coalesce(product_category, 'Unknown') || '_' || coalesce(seller_state, 'unknown')
+    
+    dimensions:
+      - name: order_date
+        type: time
+        type_params:
+          time_granularity: day
+        expr: order_date
+      
+      - name: order_year
+        type: categorical
+        expr: year
+      
+      - name: order_quarter
+        type: categorical
+        expr: quarter
+
+      - name: order_month
+        type: categorical
+        expr: month
+      
+      - name: is_weekend
+        type: categorical
+        expr: is_weekend
+      
+      - name: season_br
+        type: categorical
+        expr: season_br
+    
+    measures:
+      - name: total_orders
+        agg: sum
+        expr: total_orders
+        description: "Total number of orders"
+      
+      - name: unique_customers
+        agg: sum
+        expr: unique_customers
+        description: "Number of unique customers"
+
+      - name: gross_revenue
+        agg: sum
+        expr: gross_revenue
+        description: "Gross revenue"
+      
+      - name: net_revenue
+        agg: sum
+        expr: net_revenue
+        description: "Net revenue (gross - canceled)"
+      
+      - name: delivered_revenue_daily
+        agg: sum
+        expr: delivered_revenue
+        description: "Revenue from delivered orders (daily financials)"
+      
+      - name: canceled_revenue_daily
+        agg: sum
+        expr: canceled_revenue
+        description: "Revenue from canceled orders (daily financials)"
+      
+      - name: avg_order_value_daily
+        agg: average
+        expr: avg_order_value
+        description: "Average order value (daily financials)"
+
+      - name: median_order_value
+        agg: median
+        expr: median_order_value
+        description: "Median order value"
+
+        

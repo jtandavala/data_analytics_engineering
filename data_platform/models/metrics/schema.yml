@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: metricflow_time_spine
+    description: "Time spine model for MetricFlow semantic layer"
+    config:
+      materialized: table
+      metricflow:
+        time_spine:
+          column_name: date_day
+          time_granularity: day
+    columns:
+      - name: date_day
+        description: "Date dimension for time-based metric calculations"
+        data_type: date

@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: fact_orders
+    description: |
+      Core fact table with order items grain.
+      Each row represents one item in an order.
+      Ready for AI agent consumption with consistent naming.
+    columns:
+      - name: item_total_value
+        description: "Total value of the order item (price + freight) in BRL"
+        meta:
+          unit: "BRL"
+          type: "monetary"
+          ai_description: "The total monetary value of a single order item including shipping"
+      
+      - name: is_delivered
+        description: "Boolean flag indicating if the order was successfully delivered"
+        meta:
+          type: "boolean"
+          ai_description: "True if order status is 'delivered', False otherwise"
