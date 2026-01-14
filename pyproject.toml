@@ -1,0 +1,24 @@
+[project]
+name = "data-analytics-engineering"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dbt-core>=1.11.2",
+    "dbt-postgres>=1.10.0",
+    "loguru>=0.7.3",
+    # Note: metrics-layer requires pandas < 2.0.0, which conflicts with pandas>=2.3.3
+    # You may need to use a separate environment or check for newer metrics-layer versions
+    # "metrics-layer[postgres]>=0.16.0",
+    "metricflow>=0.208.1",
+    "pandas>=2.3.3",
+    "psycopg2>=2.9.11",
+    "psycopg2-binary>=2.9.11",
+    "sqlalchemy>=2.0.45",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.11",
+]

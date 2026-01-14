@@ -1,0 +1,31 @@
+pipeline:
+  name: AI Business OS ETL pipline
+  version: 1.0
+postgresql:
+  host: localhost
+  port: 5432
+  user: dbt
+  password: dbt
+  database: analytics
+
+customer_filepath: data/olist_customers_dataset.csv
+geolocation_filepath: data/olist_geolocation_dataset.csv
+order_items_filepath: data/olist_order_items_dataset.csv
+order_payment_filepath: data/olist_order_payments_dataset.csv
+order_review_filepath: data/olist_order_reviews_dataset.csv
+order_filepath: data/olist_orders_dataset.csv
+product_filepath: data/olist_products_dataset.csv
+seller_filepath: data/olist_sellers_dataset.csv
+product_category_filepath: data/product_category_name_translation.csv
+
+
+customer_table_PSQL: olist_raw.customers
+geolocation_table_PSQL: olist_raw.geolocations
+order_items_table_PSQL: olist_raw.order_items
+order_payments_table_PSQL: olist_raw.order_payments
+order_overviews_table_PSQL: olist_raw.order_overviews
+orders_table_PSQL: olist_raw.orders
+products_table_PSQL: olist_raw.products
+sellers_table_PSQL: olist_raw.sellers
+categories_table_PSQL: olist_raw.categories
+

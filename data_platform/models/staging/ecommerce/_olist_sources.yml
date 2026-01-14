@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: olist_raw
+    database: analytics
+    tables:
+      - name: categories
+      - name: customers
+      - name: geolocations
+      - name: order_items
+      - name: order_payments
+      - name: order_overviews
+      - name: orders
+      - name: products
+      - name: sellers
+        config:
+          loaded_at_field: loaded_at

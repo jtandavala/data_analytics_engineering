@@ -1,0 +1,24 @@
+version: 2
+
+metrics:
+  # Simple metrics from orders_semantic - no conflicts
+  - name: total_revenue
+    description: "Total revenue from all order items (price + freight)"
+    type: simple
+    type_params:
+      measure: item_total_value
+    label: "Total Revenue"
+    
+  - name: order_count
+    description: "Total number of orders"
+    type: simple
+    type_params:
+      measure: order_count
+    label: "Order Count"
+    
+  - name: unique_customers
+    description: "Count of unique customers"
+    type: simple
+    type_params:
+      measure: customer_count
+    label: "Unique Customers"
